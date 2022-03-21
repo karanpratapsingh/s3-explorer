@@ -2,10 +2,14 @@ package main
 
 import (
 	"app/api"
+	"app/service"
+	"context"
 	"embed"
 	"io/fs"
 	"os"
 
+	"github.com/aws/aws-sdk-go-v2/config"
+	"github.com/aws/aws-sdk-go-v2/service/s3"
 	"github.com/gorilla/mux"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
@@ -27,11 +31,23 @@ func main() {
 	build, err := fs.Sub(nextFS, path)
 
 	if err != nil {
-		panic(err)
+		log.Panic().Err(err).Msg("Static")
+	}
+
+	port := 8080                        // Should be a flag
+	profile := os.Getenv("AWS_PROFILE") // Should be a flag
+	region := "us-east-1"               // Should be a flag
+
+	cfg, err := config.LoadDefaultConfig(context.TODO(), config.WithDefaultRegion(region), config.WithSharedConfigProfile(profile))
+
+	if err != nil {
+		log.Panic().Err(err).Msg("AWS.Config")
 	}
 
 	router := mux.NewRouter()
+	client := s3.NewFromConfig(cfg)
 
-	a := api.New(router, build)
-	a.Start(8080)
+	svc := service.New(client)
+	a := api.New(router, build, svc)
+	a.Start(port)
 }
