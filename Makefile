@@ -1,8 +1,11 @@
+run:
+	cd web && npm run build
+	npx concurrently "make run-web" "make run-server"
+
 run-web:
 	cd web && npm run dev
 
 run-server:
-	cd web && npm run build
 	go run main.go
 
 build:
