@@ -20,6 +20,25 @@ type BucketsResponse struct {
 	Total   int      `json:"total"`
 }
 
-type NavigateRequest struct{}
+type NavigateRequest struct {
+	Bucket string `json:"bucket"`
+	Prefix string `json:"prefix"`
+}
 
-type NavigateResponse struct{}
+type S3ObjectType = string
+
+var (
+	S3ObjectTypeFile   S3ObjectType = "FILE"
+	S3ObjectTypeFolder S3ObjectType = "FOLDER"
+)
+
+type S3Object struct {
+	Name string       `json:"name"`
+	Key  string       `json:"key"`
+	Size *int64       `json:"size"`
+	Type S3ObjectType `json:"type"`
+}
+
+type NavigateResponse struct {
+	Objects []S3Object `json:"objects"`
+}
