@@ -5,8 +5,7 @@ run-web:
 	cd web && npm run dev
 
 run-server:
-	cd web && npm run export
-	go install github.com/cespare/reflex@latest
+	cd web && npm run build
 	go run main.go
 
 build:
