@@ -6,8 +6,9 @@ import (
 )
 
 type Service interface {
-	Buckets(ctx context.Context) BucketsResponse
-	Navigate(ctx context.Context, request NavigateRequest) NavigateResponse
+	Buckets(ctx context.Context) (BucketsResponse, error)
+	Navigate(ctx context.Context, request NavigateRequest) (NavigateResponse, error)
+	Presign(ctx context.Context, request PresignRequest) (PresignResponse, error)
 }
 
 type Bucket struct {
@@ -41,4 +42,14 @@ type S3Object struct {
 
 type NavigateResponse struct {
 	Objects []S3Object `json:"objects"`
+}
+
+type PresignRequest struct {
+	Bucket   string `json:"bucket"`
+	Key      string `json:"key"`
+	Duration string `json:"duration"`
+}
+
+type PresignResponse struct {
+	Url string `json:"url"`
 }

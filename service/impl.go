@@ -3,6 +3,7 @@ package service
 import (
 	"app/utils"
 	"context"
+	"time"
 
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 	"github.com/rs/zerolog/log"
@@ -16,12 +17,12 @@ func New(client *s3.Client) serviceImpl {
 	return serviceImpl{client}
 }
 
-func (svc serviceImpl) Buckets(ctx context.Context) BucketsResponse {
+func (svc serviceImpl) Buckets(ctx context.Context) (BucketsResponse, error) {
 	output, err := svc.client.ListBuckets(ctx, nil)
 
 	if err != nil {
 		log.Error().Err(err).Msg("Service.Buckets")
-		return BucketsResponse{}
+		return BucketsResponse{}, err
 	}
 
 	var buckets []Bucket
@@ -31,10 +32,10 @@ func (svc serviceImpl) Buckets(ctx context.Context) BucketsResponse {
 		buckets = append(buckets, Bucket{*bucket.Name, *bucket.CreationDate})
 	}
 
-	return BucketsResponse{buckets, total}
+	return BucketsResponse{buckets, total}, nil
 }
 
-func (svc serviceImpl) Navigate(ctx context.Context, request NavigateRequest) NavigateResponse {
+func (svc serviceImpl) Navigate(ctx context.Context, request NavigateRequest) (NavigateResponse, error) {
 	var data []S3Object = make([]S3Object, 0)
 
 	delimeter := "/"
@@ -49,7 +50,7 @@ func (svc serviceImpl) Navigate(ctx context.Context, request NavigateRequest) Na
 
 	if err != nil {
 		log.Error().Err(err).Msg("Service.Navigate.Error")
-		return NavigateResponse{data}
+		return NavigateResponse{data}, err
 	}
 
 	var files = make([]S3Object, 0)
@@ -83,5 +84,29 @@ func (svc serviceImpl) Navigate(ctx context.Context, request NavigateRequest) Na
 		Int("total", len(data)).
 		Msg("Service.Navigate")
 
-	return NavigateResponse{data}
+	return NavigateResponse{data}, nil
+}
+
+func (svc serviceImpl) Presign(ctx context.Context, request PresignRequest) (PresignResponse, error) {
+	expires, err := time.ParseDuration(request.Duration)
+
+	if err != nil {
+		log.Error().Err(err).Msg("Service.Parse.Error")
+		return PresignResponse{}, err
+	}
+
+	params := s3.GetObjectInput{
+		Bucket: &request.Bucket,
+		Key:    &request.Key,
+	}
+
+	client := s3.NewPresignClient(svc.client, s3.WithPresignExpires(expires))
+	output, err := client.PresignGetObject(ctx, &params)
+
+	if err != nil {
+		log.Error().Err(err).Msg("Service.Presign.Error")
+		return PresignResponse{}, err
+	}
+
+	return PresignResponse{output.URL}, nil
 }
