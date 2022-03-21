@@ -1,6 +1,3 @@
-run:
-	npx concurrently "make run-web" "make run-server" 
-
 run-web:
 	cd web && npm run dev
 
