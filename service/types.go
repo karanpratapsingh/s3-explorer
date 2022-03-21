@@ -12,7 +12,7 @@ type Service interface {
 }
 
 type Bucket struct {
-	Name         string    `json:"Name"`
+	Name         string    `json:"name"`
 	CreationDate time.Time `json:"creationDate"`
 }
 

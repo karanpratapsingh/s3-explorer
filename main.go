@@ -34,11 +34,15 @@ func main() {
 		log.Panic().Err(err).Msg("Static")
 	}
 
-	port := 8080                        // Should be a flag
-	profile := os.Getenv("AWS_PROFILE") // Should be a flag
-	region := "us-east-1"               // Should be a flag
+	port := 8080                        // TODO: Should be a flag
+	profile := os.Getenv("AWS_PROFILE") // TODO: Should be a flag
+	region := "us-east-1"               // TODO: Should be a flag
 
-	cfg, err := config.LoadDefaultConfig(context.TODO(), config.WithDefaultRegion(region), config.WithSharedConfigProfile(profile))
+	cfg, err := config.LoadDefaultConfig(
+		context.TODO(),
+		config.WithDefaultRegion(region),
+		config.WithSharedConfigProfile(profile),
+	)
 
 	if err != nil {
 		log.Panic().Err(err).Msg("AWS.Config")

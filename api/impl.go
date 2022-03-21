@@ -22,10 +22,10 @@ func New(router *mux.Router, assets fs.FS, svc service.Service) apiImpl {
 }
 
 func (api apiImpl) routes() {
-	api.router.Handle("/", http.FileServer(http.FS(api.assets))).Methods(http.MethodGet)
 	api.router.HandleFunc("/api/buckets/list", api.ListBuckets).Methods(http.MethodGet)
 	api.router.HandleFunc("/api/buckets/navigate", api.NavigateBucket).Methods(http.MethodPost)
 	api.router.HandleFunc("/api/objects/presign", api.PresignObject).Methods(http.MethodPost)
+	api.router.PathPrefix("/").Handler(http.FileServer(http.FS(api.assets)))
 }
 
 func (api apiImpl) Start(port int) {
