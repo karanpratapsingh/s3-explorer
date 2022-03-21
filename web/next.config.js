@@ -9,6 +9,7 @@ const nextConfig = {
       '/': { page: '/' },
     }
   },
+  trailingSlash: true,
 }
 
 module.exports = nextConfig
