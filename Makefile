@@ -9,5 +9,5 @@ run-server:
 	go run main.go
 
 build:
-	cd web && npm run export
+	cd web && npm run build
 	go build -o app
