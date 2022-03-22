@@ -10,21 +10,29 @@
     "lint:fix": "prettier --write ."
   },
   "dependencies": {
-    "@chakra-ui/react": "1.8.6",
-    "@emotion/react": "11.8.2",
-    "@emotion/styled": "11.8.1",
+    "@geist-ui/core": "2.3.7",
+    "@geist-ui/icons": "1.0.1",
+    "clsx": "1.1.1",
     "framer-motion": "6.2.8",
+    "lodash": "4.17.21",
     "next": "12.1.0",
+    "query-string": "7.1.1",
     "react": "17.0.2",
     "react-dom": "17.0.2",
+    "react-loader-spinner": "6.0.0-0",
     "react-query": "3.34.16"
   },
   "devDependencies": {
+    "@types/lodash": "4.14.180",
     "@types/node": "17.0.21",
     "@types/react": "17.0.41",
+    "@types/react-infinite-scroller": "1.2.2",
+    "autoprefixer": "10.4.4",
     "eslint": "8.11.0",
     "eslint-config-next": "12.1.0",
+    "postcss": "8.4.12",
     "prettier": "2.6.0",
+    "tailwindcss": "3.0.23",
     "typescript": "4.6.2"
   },
   "volta": {
