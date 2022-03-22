@@ -15,14 +15,14 @@ import ObjectListItem from './object-listitem';
 interface ObjectListProps {
   bucket: string | null;
   objects: S3Object[];
-  paths: string[];
+  currentKey: string;
   loading: boolean;
-  onNext: (path: string) => void;
+  onNext: (key: string) => void;
   onBack: () => void;
 }
 
 export default function ObjectList(props: ObjectListProps): React.ReactElement {
-  const { bucket, objects, paths, loading, onNext, onBack } = props;
+  const { bucket, objects, currentKey, loading, onNext, onBack } = props;
 
   const [search, setSearch] = useState('');
 
@@ -43,6 +43,8 @@ export default function ObjectList(props: ObjectListProps): React.ReactElement {
   const hasItems = !!filteredObjects.length && !!bucket && !loading;
   const isEmpty = !filteredObjects.length && bucket && !loading;
 
+  const breadcrumbs = currentKey.split('/');
+
   return (
     <div
       className='flex flex-col mt-4 rounded-md p-4 border'
@@ -62,9 +64,12 @@ export default function ObjectList(props: ObjectListProps): React.ReactElement {
                 {bucket}
               </Breadcrumbs.Item>
               {React.Children.toArray(
-                paths.map(path => (
-                  <Breadcrumbs.Item className='text-sm font-light' key={path}>
-                    {path}
+                breadcrumbs.map(breadcrumb => (
+                  <Breadcrumbs.Item
+                    className='text-sm font-light'
+                    key={breadcrumb}
+                  >
+                    {breadcrumb}
                   </Breadcrumbs.Item>
                 )),
               )}

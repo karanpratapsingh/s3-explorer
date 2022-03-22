@@ -9,18 +9,18 @@ import { formatBytes } from '../utils/shared';
 
 interface ObjectListItemProps {
   object: S3Object;
-  onNext: (path: string) => void;
+  onNext: (key: string) => void;
 }
 
 export default function ObjectListItem(
   props: ObjectListItemProps,
 ): React.ReactElement {
   const { object, onNext } = props;
-  const { name, type, size } = object;
+  const { name, key, type, size } = object;
 
   const isFile = type === S3ObjectType.FILE;
 
-  const onClick = () => !isFile && onNext(name);
+  const onClick = () => !isFile && onNext(key);
 
   let icon: React.ReactNode = null;
 

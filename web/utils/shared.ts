@@ -14,36 +14,17 @@ export function formatBytes(bytes: number, decimals: number = 2): string {
   return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
 }
 
-export function getUpdatedPath(paths: string[], path: string): string[] {
-  const updatedPaths = paths.slice();
-  updatedPaths.pop();
-  updatedPaths.push(path);
-  updatedPaths.push('');
-
-  return updatedPaths;
-}
-
-export function getKeyFromPath(paths: string[], object?: string): string {
-  const updatedPaths = [...paths];
-
-  if (object) {
-    updatedPaths.pop();
-    updatedPaths.push(object);
-  }
-
-  return updatedPaths.join('/');
-}
-
-export function getPreviousPaths(paths: string[]): string[] {
-  const updatedPaths = paths.slice();
+export function getPreviousKey(key: string): string {
+  const updatedPaths = key.split(defaultParams.Delimiter);
 
   updatedPaths.splice(-2, 1);
+
   if (updatedPaths.length === 1 && updatedPaths[0] === '') {
     updatedPaths.pop();
     updatedPaths.push(defaultParams.Prefix);
   }
 
-  return updatedPaths;
+  return updatedPaths.join(defaultParams.Delimiter);
 }
 
 export function filterObjects(search: string, objects: S3Object[]): S3Object[] {

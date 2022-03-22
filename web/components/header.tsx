@@ -5,21 +5,21 @@ import config from '../config';
 import Loader from './loader';
 
 interface TitleProps {
-  defaultValue: string | undefined;
+  value: string | undefined;
   loading: boolean;
   buckets: Bucket[];
   onSelect?: (value: string | string[]) => void;
 }
 
 export default function Header(props: TitleProps): React.ReactElement {
-  const { defaultValue, loading, buckets, onSelect } = props;
+  const { value, loading, buckets, onSelect } = props;
 
   return (
     <Description
       title={<Text h6>{config.name}</Text>}
       content={
         <Select
-          value={defaultValue}
+          value={value}
           placeholder={
             <div className='flex items-center'>
               <span>select a bucket</span>
