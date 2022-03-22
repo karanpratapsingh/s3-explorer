@@ -1,5 +1,5 @@
 import toLower from 'lodash/toLower';
-import { S3Object } from '../hooks/buckets';
+import { S3Object } from '../api';
 import { defaultParams } from './aws';
 
 export function formatBytes(bytes: number, decimals: number = 2): string {

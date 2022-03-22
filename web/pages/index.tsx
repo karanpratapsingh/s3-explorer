@@ -1,23 +1,28 @@
 import {
   Breadcrumbs,
   Description,
-  Fieldset,
   Input,
   Select,
   Spacer,
   Text,
   useToasts,
 } from '@geist-ui/core';
+import AlertCircle from '@geist-ui/icons/AlertCircle';
+import Archive from '@geist-ui/icons/archive';
+import ChevronLeft from '@geist-ui/icons/ChevronLeft';
+import Database from '@geist-ui/icons/database';
+import File from '@geist-ui/icons/file';
+import Folder from '@geist-ui/icons/folder';
+import Info from '@geist-ui/icons/Info';
+import MoreVertical from '@geist-ui/icons/moreVertical';
+import Search from '@geist-ui/icons/Search';
+import clsx from 'clsx';
 import defaultTo from 'lodash/defaultTo';
 import React, { useMemo, useState } from 'react';
+import { Oval } from 'react-loader-spinner';
+import { Bucket, S3Object, S3ObjectType } from '../api';
 import config from '../config';
-import {
-  Bucket,
-  S3Object,
-  S3ObjectType,
-  useListBuckets,
-  useNavigateBucket,
-} from '../hooks/buckets';
+import { useListBuckets, useNavigateBucket } from '../hooks/buckets';
 import { defaultParams } from '../utils/aws';
 import {
   formatBytes,
@@ -25,17 +30,6 @@ import {
   getPreviousPaths,
   getUpdatedPath,
 } from '../utils/shared';
-import Info from '@geist-ui/icons/Info';
-import Search from '@geist-ui/icons/Search';
-import ChevronLeft from '@geist-ui/icons/ChevronLeft';
-import Database from '@geist-ui/icons/database';
-import File from '@geist-ui/icons/file';
-import Folder from '@geist-ui/icons/folder';
-import clsx from 'clsx';
-import MoreVertical from '@geist-ui/icons/moreVertical';
-import Archive from '@geist-ui/icons/archive';
-import AlertCircle from '@geist-ui/icons/AlertCircle';
-import { Oval } from 'react-loader-spinner';
 import { Colors } from '../utils/theme';
 
 export default function Home(): React.ReactElement {
