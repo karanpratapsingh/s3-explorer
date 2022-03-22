@@ -83,17 +83,11 @@ export default function ObjectList(props: ObjectListProps): React.ReactElement {
       )}
 
       {!bucket && (
-        <Empty
-          text='Please select a bucket'
-          icon={<AlertCircle color='#CCC' size={50} />}
-        />
+        <Empty text='Please select a bucket' icon={<AlertCircle size={50} />} />
       )}
 
       {isEmpty && (
-        <Empty
-          text='No objects found...'
-          icon={<Archive color='#CCC' size={50} />}
-        />
+        <Empty text='No objects found...' icon={<Archive size={50} />} />
       )}
 
       {hasItems && (
