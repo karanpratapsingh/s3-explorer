@@ -1,4 +1,4 @@
-import { Breadcrumbs, Input, Spacer } from '@geist-ui/core';
+import { Breadcrumbs, Input, Loading, Spacer } from '@geist-ui/core';
 import AlertCircle from '@geist-ui/icons/alertCircle';
 import Archive from '@geist-ui/icons/archive';
 import ChevronLeft from '@geist-ui/icons/chevronLeft';
@@ -11,8 +11,7 @@ import { S3Object } from '../api';
 import { useNavigateBucket } from '../hooks/buckets';
 import { createBreadcrumbs, filterObjects } from '../utils/shared';
 import Empty from './empty';
-import Loader from './loader';
-import ObjectListItem from './object-listitem';
+import ObjectListItem, { ActionType } from './object-listitem';
 
 interface ObjectListProps {
   bucket: string | null;
@@ -33,9 +32,30 @@ export default function ObjectList(props: ObjectListProps): React.ReactElement {
     setSearch(target.value);
   }
 
+  function onAction(key: string, action: ActionType): void {
+    switch (action) {
+      case ActionType.Share:
+        alert('TODO: open modal');
+        break;
+      case ActionType.Move:
+        alert('TODO: implement');
+        break;
+      case ActionType.Delete:
+        alert('TODO: implement');
+        break;
+    }
+  }
+
   function renderObject(object: S3Object): React.ReactNode {
     const { key } = object;
-    return <ObjectListItem key={key} object={object} onNext={onNext} />;
+    return (
+      <ObjectListItem
+        key={key}
+        object={object}
+        onNext={onNext}
+        onAction={onAction}
+      />
+    );
   }
 
   const filteredObjects = useMemo(
@@ -93,7 +113,7 @@ export default function ObjectList(props: ObjectListProps): React.ReactElement {
         <Input icon={<Search />} placeholder='Search...' onChange={onSearch} />
       </div>
 
-      {loading && <Empty icon={<Loader size={30} />} />}
+      {loading && <Empty icon={<Loading scale={2} />} />}
 
       {!bucket && (
         <Empty text='Please select a bucket' icon={<AlertCircle size={50} />} />

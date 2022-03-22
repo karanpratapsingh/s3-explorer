@@ -1,10 +1,9 @@
-import { Description, Select, Spacer, Text } from '@geist-ui/core';
+import { Description, Loading, Select, Spacer, Text } from '@geist-ui/core';
 import defaultTo from 'lodash/defaultTo';
 import React from 'react';
 import { Bucket } from '../api';
 import config from '../config';
 import { useListBuckets } from '../hooks/buckets';
-import Loader from './loader';
 
 interface TitleProps {
   value: string | null;
@@ -29,7 +28,7 @@ export default function Header(props: TitleProps): React.ReactElement {
             <div className='flex items-center'>
               <span>select a bucket</span>
               <Spacer w={0.5} />
-              {loading && <Loader size={15} />}
+              {loading && <Loading width={2} />}
             </div>
           }
           onChange={onSelect}
