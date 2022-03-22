@@ -9,23 +9,20 @@ import { getPreviousKey } from '../utils/shared';
 
 export default function Home(): React.ReactElement {
   const { setToast } = useToasts();
-  const [bucket, setBucket] = useState(defaultParams.Bucket);
+  const [bucket, setBucket] = useState<string | null>(defaultParams.Bucket);
   const [key, setKey] = useState(defaultParams.Prefix);
 
-  const { data: listBucketsData, loading: loadingBuckets } = useListBuckets();
   const { data: navigateBucketData, loading: loadingNavigateBucket } =
-    useNavigateBucket(bucket, key);
+    useNavigateBucket(bucket ?? '', key);
 
-  const onSelect = (bucket: string | string[]): void => {
+  function onSelect(bucket: string | string[]): void {
     if (Array.isArray(bucket)) {
       return;
     }
 
     setBucket(bucket);
-  };
+  }
 
-  const buckets = defaultTo(listBucketsData?.buckets, []);
-  const defaultSelectValue = defaultTo(bucket, undefined);
   const objects = defaultTo(navigateBucketData?.objects, []);
 
   function onNext(key: string): void {
@@ -45,12 +42,7 @@ export default function Home(): React.ReactElement {
 
   return (
     <div className='p-8 w-full flex flex-col'>
-      <Header
-        value={defaultSelectValue}
-        loading={loadingBuckets}
-        buckets={buckets}
-        onSelect={onSelect}
-      />
+      <Header value={bucket} onSelect={onSelect} />
       <ObjectList
         bucket={bucket}
         objects={objects}

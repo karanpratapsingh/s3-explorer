@@ -1,25 +1,30 @@
 import { Description, Select, Spacer, Text } from '@geist-ui/core';
+import defaultTo from 'lodash/defaultTo';
 import React from 'react';
 import { Bucket } from '../api';
 import config from '../config';
+import { useListBuckets } from '../hooks/buckets';
 import Loader from './loader';
 
 interface TitleProps {
-  value: string | undefined;
-  loading: boolean;
-  buckets: Bucket[];
+  value: string | null;
   onSelect?: (value: string | string[]) => void;
 }
 
 export default function Header(props: TitleProps): React.ReactElement {
-  const { value, loading, buckets, onSelect } = props;
+  const { value, onSelect } = props;
+
+  const { data, loading } = useListBuckets();
+
+  const defaultValue = defaultTo(value, undefined);
+  const buckets = defaultTo(data?.buckets, []);
 
   return (
     <Description
       title={<Text h6>{config.name}</Text>}
       content={
         <Select
-          value={value}
+          value={defaultValue}
           placeholder={
             <div className='flex items-center'>
               <span>select a bucket</span>
