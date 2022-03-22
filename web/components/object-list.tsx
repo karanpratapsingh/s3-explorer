@@ -10,6 +10,7 @@ import { Oval } from 'react-loader-spinner';
 import { S3Object } from '../api';
 import { Colors } from '../utils/theme';
 import Empty from './empty';
+import Loader from './loader';
 import ObjectListItem from './object-listitem';
 
 interface ObjectListProps {
@@ -69,18 +70,7 @@ export default function ObjectList(props: ObjectListProps): React.ReactElement {
         <Input icon={<Search />} placeholder='Search...' />
       </div>
 
-      {loading && (
-        <Empty
-          icon={
-            <Oval
-              height={30}
-              width={30}
-              color={Colors.primary}
-              secondaryColor={Colors.secondary}
-            />
-          }
-        />
-      )}
+      {loading && <Empty icon={<Loader size={30} />} />}
 
       {!bucket && (
         <Empty text='Please select a bucket' icon={<AlertCircle size={50} />} />

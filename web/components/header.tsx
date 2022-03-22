@@ -1,7 +1,8 @@
-import { Description, Select, Text } from '@geist-ui/core';
+import { Description, Select, Spacer, Text } from '@geist-ui/core';
 import React from 'react';
 import { Bucket } from '../api';
 import config from '../config';
+import Loader from './loader';
 
 interface TitleProps {
   defaultValue: string | undefined;
@@ -10,7 +11,6 @@ interface TitleProps {
   onSelect?: (value: string | string[]) => void;
 }
 
-// TODO: use loading
 export default function Header(props: TitleProps): React.ReactElement {
   const { defaultValue, loading, buckets, onSelect } = props;
 
@@ -20,7 +20,13 @@ export default function Header(props: TitleProps): React.ReactElement {
       content={
         <Select
           value={defaultValue}
-          placeholder='select a source'
+          placeholder={
+            <div className='flex items-center'>
+              <span>select a bucket</span>
+              <Spacer w={0.5} />
+              {loading && <Loader size={15} />}
+            </div>
+          }
           onChange={onSelect}
         >
           {React.Children.toArray(
