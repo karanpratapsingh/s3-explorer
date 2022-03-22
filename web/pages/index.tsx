@@ -1,9 +1,7 @@
 import { useToasts } from '@geist-ui/core';
-import defaultTo from 'lodash/defaultTo';
 import React, { useState } from 'react';
 import Header from '../components/header';
 import ObjectList from '../components/object-list';
-import { useListBuckets, useNavigateBucket } from '../hooks/buckets';
 import { defaultParams } from '../utils/aws';
 import { getPreviousKey } from '../utils/shared';
 
