@@ -1,5 +1,5 @@
 export const defaultParams = {
-  Bucket: null,
+  Bucket: '',
   Prefix: '',
   Delimiter: '/',
 };

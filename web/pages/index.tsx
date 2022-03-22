@@ -13,15 +13,14 @@ import {
 
 export default function Home(): React.ReactElement {
   const { setToast } = useToasts();
-  const [bucket, setBucket] = useState<string | null>(defaultParams.Bucket);
+  const [bucket, setBucket] = useState(defaultParams.Bucket);
   const [paths, setPaths] = useState<string[]>([defaultParams.Prefix]);
 
   const key = useMemo(() => getKeyFromPath(paths), [paths]);
 
-  const { data: listBucketsData, loading: isFetchingListBuckets } =
-    useListBuckets();
-  const { data: navigateBucketData, loading: isFetchingNavigateBucket } =
-    useNavigateBucket(bucket ?? '', key);
+  const { data: listBucketsData, loading: loadingBuckets } = useListBuckets();
+  const { data: navigateBucketData, loading: loadingNavigateBucket } =
+    useNavigateBucket(bucket, key);
 
   const onSelect = (bucket: string | string[]): void => {
     if (Array.isArray(bucket)) {
@@ -33,7 +32,7 @@ export default function Home(): React.ReactElement {
   };
 
   const onNavigateBack = (): void => {
-    if (isFetchingNavigateBucket) return;
+    if (loadingNavigateBucket) return;
 
     if (paths.length > 1) {
       setPaths(getPreviousPaths(paths));
@@ -55,7 +54,7 @@ export default function Home(): React.ReactElement {
     <div className='p-8 w-full flex flex-col'>
       <Header
         defaultValue={defaultSelectValue}
-        loading={isFetchingListBuckets}
+        loading={loadingBuckets}
         buckets={buckets}
         onSelect={onSelect}
       />
@@ -63,7 +62,7 @@ export default function Home(): React.ReactElement {
         bucket={bucket}
         objects={objects}
         paths={paths}
-        loading={isFetchingNavigateBucket}
+        loading={loadingNavigateBucket}
         onNext={onNext}
         onBack={onNavigateBack}
       />

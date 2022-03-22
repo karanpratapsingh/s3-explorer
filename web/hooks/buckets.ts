@@ -1,3 +1,4 @@
+import { isEmpty } from 'lodash';
 import { useQuery } from 'react-query';
 import {
   BucketsResponse,
@@ -26,10 +27,10 @@ export function useNavigateBucket(
     isLoading: loading,
     error,
   } = useQuery<NavigateResponse, Error>(
-    ['buckets-navigate', prefix],
+    ['buckets-navigate', bucket, prefix],
     () => navigateBucket({ bucket, prefix }),
     {
-      enabled: bucket !== '',
+      enabled: !isEmpty(bucket),
     },
   );
 
