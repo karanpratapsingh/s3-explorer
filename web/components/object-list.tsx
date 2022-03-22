@@ -1,14 +1,13 @@
 import { Breadcrumbs, Input, Spacer } from '@geist-ui/core';
-import AlertCircle from '@geist-ui/icons/AlertCircle';
+import AlertCircle from '@geist-ui/icons/alertCircle';
 import Archive from '@geist-ui/icons/archive';
-import ChevronLeft from '@geist-ui/icons/ChevronLeft';
+import ChevronLeft from '@geist-ui/icons/chevronLeft';
 import Database from '@geist-ui/icons/database';
-import Info from '@geist-ui/icons/Info';
-import Search from '@geist-ui/icons/Search';
-import React from 'react';
-import { Oval } from 'react-loader-spinner';
+import Info from '@geist-ui/icons/info';
+import Search from '@geist-ui/icons/search';
+import React, { useMemo, useState } from 'react';
 import { S3Object } from '../api';
-import { Colors } from '../utils/theme';
+import { filterObjects } from '../utils/shared';
 import Empty from './empty';
 import Loader from './loader';
 import ObjectListItem from './object-listitem';
@@ -25,13 +24,24 @@ interface ObjectListProps {
 export default function ObjectList(props: ObjectListProps): React.ReactElement {
   const { bucket, objects, paths, loading, onNext, onBack } = props;
 
+  const [search, setSearch] = useState('');
+
+  function onSearch({ target }: React.ChangeEvent<HTMLInputElement>) {
+    setSearch(target.value);
+  }
+
   function renderObject(object: S3Object): React.ReactNode {
     const { key } = object;
     return <ObjectListItem key={key} object={object} onNext={onNext} />;
   }
 
-  const hasItems = !!objects.length && !!bucket && !loading;
-  const isEmpty = !objects.length && bucket && !loading;
+  const filteredObjects = useMemo(
+    () => filterObjects(search, objects),
+    [search, objects],
+  );
+
+  const hasItems = !!filteredObjects.length && !!bucket && !loading;
+  const isEmpty = !filteredObjects.length && bucket && !loading;
 
   return (
     <div
@@ -67,7 +77,7 @@ export default function ObjectList(props: ObjectListProps): React.ReactElement {
             <span className='text-sm font-light'>Select a bucket</span>
           </div>
         )}
-        <Input icon={<Search />} placeholder='Search...' />
+        <Input icon={<Search />} placeholder='Search...' onChange={onSearch} />
       </div>
 
       {loading && <Empty icon={<Loader size={30} />} />}
@@ -82,7 +92,7 @@ export default function ObjectList(props: ObjectListProps): React.ReactElement {
 
       {hasItems && (
         <div className='flex flex-1 flex-col overflow-scroll'>
-          {React.Children.toArray(objects.map(renderObject))}
+          {React.Children.toArray(filteredObjects.map(renderObject))}
         </div>
       )}
     </div>

@@ -46,39 +46,6 @@ export function getPreviousPaths(paths: string[]): string[] {
   return updatedPaths;
 }
 
-export enum FileType {
-  video = 'video',
-  text = 'text',
-  unknown = 'unknown',
-}
-
-export function getContentType(name: string): FileType {
-  const type = getFileType(name);
-
-  if (['mp4', 'm4v', 'avi', 'mkv'].includes(type)) return FileType.video;
-  if (['srt'].includes(type)) return FileType.text;
-
-  return FileType.unknown;
-}
-
-export function getFileType(name: string): string {
-  const nameParts: string[] = name.split('.');
-  const type = nameParts[nameParts.length - 1];
-  return type;
-}
-
-export function getMimeType(name: string | null): string {
-  if (!name) return '';
-  const contentType = getContentType(name);
-  let fileType = getFileType(name);
-
-  if (['mkv', 'm4v'].includes(fileType)) {
-    fileType = 'webm';
-  }
-
-  return `${contentType}/${fileType}`;
-}
-
 export function filterObjects(search: string, objects: S3Object[]): S3Object[] {
   return [...objects].filter(
     (object: S3Object) => toLower(object.name).search(toLower(search)) !== -1,
