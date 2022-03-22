@@ -5,26 +5,29 @@ import ChevronLeft from '@geist-ui/icons/chevronLeft';
 import Database from '@geist-ui/icons/database';
 import Info from '@geist-ui/icons/info';
 import Search from '@geist-ui/icons/search';
+import defaultTo from 'lodash/defaultTo';
 import React, { useMemo, useState } from 'react';
 import { S3Object } from '../api';
-import { filterObjects } from '../utils/shared';
+import { useNavigateBucket } from '../hooks/buckets';
+import { createBreadcrumbs, filterObjects } from '../utils/shared';
 import Empty from './empty';
 import Loader from './loader';
 import ObjectListItem from './object-listitem';
 
 interface ObjectListProps {
   bucket: string | null;
-  objects: S3Object[];
   currentKey: string;
-  loading: boolean;
   onNext: (key: string) => void;
   onBack: () => void;
 }
 
 export default function ObjectList(props: ObjectListProps): React.ReactElement {
-  const { bucket, objects, currentKey, loading, onNext, onBack } = props;
+  const { bucket, currentKey, onNext, onBack } = props;
 
   const [search, setSearch] = useState('');
+  const { data, loading } = useNavigateBucket(bucket ?? '', currentKey);
+
+  const objects = defaultTo(data?.objects, []);
 
   function onSearch({ target }: React.ChangeEvent<HTMLInputElement>) {
     setSearch(target.value);
@@ -43,45 +46,50 @@ export default function ObjectList(props: ObjectListProps): React.ReactElement {
   const hasItems = !!filteredObjects.length && !!bucket && !loading;
   const isEmpty = !filteredObjects.length && bucket && !loading;
 
-  const breadcrumbs = currentKey.split('/');
+  const breadcrumbs = createBreadcrumbs(currentKey);
+
+  function renderBreadcrumb(breadcrumb: string): React.ReactNode {
+    return (
+      <Breadcrumbs.Item className='text-sm font-light' key={breadcrumb}>
+        {breadcrumb}
+      </Breadcrumbs.Item>
+    );
+  }
+
+  let breadcrumbContent: React.ReactNode = (
+    <div className='flex items-center'>
+      <Info size={18} />
+      <Spacer w={0.5} />
+      <span className='text-sm font-light'>Select a bucket</span>
+    </div>
+  );
+
+  if (bucket) {
+    breadcrumbContent = (
+      <div className='flex items-center'>
+        <ChevronLeft
+          className='cursor-pointer'
+          size={22}
+          onClick={() => !loading && onBack()}
+        />
+        <Breadcrumbs>
+          <Breadcrumbs.Item>
+            <Database size={20} />
+            {bucket}
+          </Breadcrumbs.Item>
+          {React.Children.toArray(breadcrumbs.map(renderBreadcrumb))}
+        </Breadcrumbs>
+      </div>
+    );
+  }
 
   return (
     <div
-      className='flex flex-col mt-4 rounded-md p-4 border'
+      className='flex flex-col mt-4 p-4 rounded-md border'
       style={{ height: '80vh' }}
     >
       <div className='pb-2 flex items-center justify-between'>
-        {bucket ? (
-          <div className='flex items-center'>
-            <ChevronLeft
-              className='cursor-pointer'
-              size={22}
-              onClick={onBack}
-            />
-            <Breadcrumbs>
-              <Breadcrumbs.Item>
-                <Database size={20} />
-                {bucket}
-              </Breadcrumbs.Item>
-              {React.Children.toArray(
-                breadcrumbs.map(breadcrumb => (
-                  <Breadcrumbs.Item
-                    className='text-sm font-light'
-                    key={breadcrumb}
-                  >
-                    {breadcrumb}
-                  </Breadcrumbs.Item>
-                )),
-              )}
-            </Breadcrumbs>
-          </div>
-        ) : (
-          <div className='flex items-center'>
-            <Info size={18} />
-            <Spacer w={0.5} />
-            <span className='text-sm font-light'>Select a bucket</span>
-          </div>
-        )}
+        {breadcrumbContent}
         <Input icon={<Search />} placeholder='Search...' onChange={onSearch} />
       </div>
 

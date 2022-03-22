@@ -9,11 +9,9 @@ import { getPreviousKey } from '../utils/shared';
 
 export default function Home(): React.ReactElement {
   const { setToast } = useToasts();
-  const [bucket, setBucket] = useState<string | null>(defaultParams.Bucket);
-  const [key, setKey] = useState(defaultParams.Prefix);
 
-  const { data: navigateBucketData, loading: loadingNavigateBucket } =
-    useNavigateBucket(bucket ?? '', key);
+  const [bucket, setBucket] = useState<string | null>(defaultParams.Bucket);
+  const [currentKey, setCurrentKey] = useState(defaultParams.Prefix);
 
   function onSelect(bucket: string | string[]): void {
     if (Array.isArray(bucket)) {
@@ -23,18 +21,14 @@ export default function Home(): React.ReactElement {
     setBucket(bucket);
   }
 
-  const objects = defaultTo(navigateBucketData?.objects, []);
-
   function onNext(key: string): void {
-    setKey(key);
+    setCurrentKey(key);
   }
 
   function onBack(): void {
-    if (loadingNavigateBucket) return;
-
-    if (key.length) {
-      const prevKey = getPreviousKey(key);
-      setKey(prevKey);
+    if (currentKey.length) {
+      const prevKey = getPreviousKey(currentKey);
+      setCurrentKey(prevKey);
     } else {
       setToast({ type: 'warning', text: 'Cannot go back' });
     }
@@ -45,9 +39,7 @@ export default function Home(): React.ReactElement {
       <Header value={bucket} onSelect={onSelect} />
       <ObjectList
         bucket={bucket}
-        objects={objects}
-        currentKey={key}
-        loading={loadingNavigateBucket}
+        currentKey={currentKey}
         onNext={onNext}
         onBack={onBack}
       />

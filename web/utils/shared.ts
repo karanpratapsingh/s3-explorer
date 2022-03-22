@@ -27,6 +27,10 @@ export function getPreviousKey(key: string): string {
   return updatedPaths.join(defaultParams.Delimiter);
 }
 
+export function createBreadcrumbs(key: string): string[] {
+  return key.split(defaultParams.Delimiter);
+}
+
 export function filterObjects(search: string, objects: S3Object[]): S3Object[] {
   return [...objects].filter(
     (object: S3Object) => toLower(object.name).search(toLower(search)) !== -1,
