@@ -19,6 +19,7 @@ const path = "web/build"
 
 //go:embed web/build
 //go:embed web/build/_next
+//go:embed web/build/_next/static/css/*.css
 //go:embed web/build/_next/static/chunks/pages/*.js
 //go:embed web/build/_next/static/*/*.js
 var nextFS embed.FS
