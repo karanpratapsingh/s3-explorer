@@ -10,4 +10,4 @@ run-server:
 
 build:
 	cd web && npm run build
-	go build -o app
+	go build -o build/app
