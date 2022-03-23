@@ -7,7 +7,7 @@ import { useListBuckets } from '../hooks/buckets';
 import { useNotifyError } from '../hooks/options';
 
 interface TitleProps {
-  value: string | null;
+  value: string;
   onSelect?: (value: string | string[]) => void;
 }
 

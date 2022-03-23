@@ -8,7 +8,7 @@ import { getPreviousKey } from '../utils/shared';
 export default function Home(): React.ReactElement {
   const { setToast } = useToasts();
 
-  const [bucket, setBucket] = useState<string | null>(defaultParams.Bucket);
+  const [bucket, setBucket] = useState(defaultParams.Bucket);
   const [currentKey, setCurrentKey] = useState(defaultParams.Prefix);
 
   function onSelect(bucket: string | string[]): void {

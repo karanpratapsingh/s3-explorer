@@ -1,4 +1,4 @@
-import { isEmpty } from 'lodash';
+import isEmpty from 'lodash/isEmpty';
 import { useQuery } from 'react-query';
 import {
   BucketsResponse,

@@ -5,6 +5,7 @@ import ChevronLeft from '@geist-ui/icons/chevronLeft';
 import Database from '@geist-ui/icons/database';
 import Info from '@geist-ui/icons/info';
 import Search from '@geist-ui/icons/search';
+import isEmpty from 'lodash/isEmpty';
 import defaultTo from 'lodash/defaultTo';
 import React, { useMemo, useState } from 'react';
 import { NavigateResponse, S3Object } from '../api';
@@ -18,7 +19,7 @@ import ObjectListItem, { ActionType } from './object-listitem';
 import ShareModal from './share-modal';
 
 interface ObjectListProps {
-  bucket: string | null;
+  bucket: string;
   currentKey: string;
   onNext: (key: string) => void;
   onBack: () => void;
@@ -32,10 +33,7 @@ export default function ObjectList(props: ObjectListProps): React.ReactElement {
   const [search, setSearch] = useState('');
   const [objectKey, setObjectKey] = useState(defaultParams.Prefix);
 
-  const { data, loading, error } = useNavigateBucket(
-    defaultTo(bucket, ''),
-    currentKey,
-  );
+  const { data, loading, error } = useNavigateBucket(bucket, currentKey);
 
   useNotifyError<NavigateResponse>({ data, loading, error });
 
@@ -76,8 +74,8 @@ export default function ObjectList(props: ObjectListProps): React.ReactElement {
     [search, objects],
   );
 
-  const hasItems = !!filteredObjects.length && !!bucket && !loading;
-  const isEmpty = !filteredObjects.length && bucket && !loading;
+  const hasItems = !!filteredObjects.length && !isEmpty(bucket) && !loading;
+  const noObjects = !filteredObjects.length && !isEmpty(bucket) && !loading;
   const isRoot = currentKey !== defaultParams.Prefix;
 
   const onNavigateBack = () => !loading && onBack();
@@ -137,7 +135,7 @@ export default function ObjectList(props: ObjectListProps): React.ReactElement {
         <Empty text='Please select a bucket' icon={<AlertCircle size={50} />} />
       )}
 
-      {isEmpty && (
+      {noObjects && (
         <Empty text='No objects found' icon={<Archive size={50} />} />
       )}
 

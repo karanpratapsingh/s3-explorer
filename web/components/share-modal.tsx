@@ -16,7 +16,7 @@ import { usePresignUrl } from '../hooks/objects';
 import { useNotifyError } from '../hooks/options';
 
 interface ShareModalProps {
-  bucket: string | null;
+  bucket: string;
   objectKey: string;
   bindings: ModalHooksBindings;
   onClose: () => void;
@@ -41,7 +41,7 @@ export default function ShareModal(props: ShareModalProps): React.ReactElement {
       return;
     }
 
-    if (!bucket) {
+    if (isEmpty(bucket)) {
       setToast({ type: 'error', text: 'bucket is null' });
       return;
     }
