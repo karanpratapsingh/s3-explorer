@@ -24,3 +24,17 @@ export async function navigateBucket(
     body: JSON.stringify(request),
   }).then(res => res.json());
 }
+
+export async function presignUrl(
+  request: PresignRequest,
+): Promise<PresignResponse> {
+  return await fetch(`${config.apiURL}/api/objects/presign`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(request),
+  }).then(res => res.json());
+}
+
+export * from './types';
