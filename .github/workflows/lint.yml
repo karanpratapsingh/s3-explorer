@@ -31,4 +31,5 @@ jobs:
     - name: Lint Server
       uses: golangci/golangci-lint-action@v2
       with:
+        go: 1.18
         version: v1.45
