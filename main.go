@@ -31,7 +31,7 @@ func init() {
 }
 
 func main() {
-	port := flag.Int("port", 8080, "Port for the application")
+	port := 8080
 	region := flag.String("region", "", "AWS region")
 	profile := flag.String("profile", "", "AWS profile")
 
@@ -56,7 +56,7 @@ func main() {
 
 	svc := service.New(client)
 	a := api.New(router, build, svc)
-	a.Start(*port)
+	a.Start(port)
 }
 
 func prepareConfig(region, profile *string) (aws.Config, error) {
