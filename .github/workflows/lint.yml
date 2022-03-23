@@ -27,6 +27,7 @@ jobs:
 
     - name: Lint Web
       run: cd web && npm run lint
+
     # TODO: Fix Go lint action
     # - name: Lint Server
     #   uses: golangci/golangci-lint-action@v2
