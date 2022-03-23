@@ -9,6 +9,10 @@ module.exports = {
         primary: '#000000',
         secondary: '#9E9E9E',
       },
+      borderColor: {
+        light: '#EAEAEA',
+        dark: '#252525'
+      }
     },
   },
   plugins: [],
