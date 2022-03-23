@@ -109,10 +109,10 @@ export default function ObjectList(props: ObjectListProps): React.ReactElement {
 
   return (
     <div
-      className='flex flex-col mt-4 p-4 rounded-md border'
+      className='flex flex-col mt-4 p-4 rounded-md border border-light'
       style={{ height: '80vh' }}
     >
-      <div className='pb-3 flex items-center justify-between border-b'>
+      <div className='pb-3 flex items-center justify-between border-b border-light'>
         {breadcrumbContent}
         <Input icon={<Search />} placeholder='Search...' onChange={onSearch} />
       </div>
@@ -124,7 +124,7 @@ export default function ObjectList(props: ObjectListProps): React.ReactElement {
       )}
 
       {isEmpty && (
-        <Empty text='No objects found...' icon={<Archive size={50} />} />
+        <Empty text='No objects found' icon={<Archive size={50} />} />
       )}
 
       {hasItems && (

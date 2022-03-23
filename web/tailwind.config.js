@@ -11,8 +11,8 @@ module.exports = {
       },
       borderColor: {
         light: '#EAEAEA',
-        dark: '#252525'
-      }
+        dark: '#252525',
+      },
     },
   },
   plugins: [],
