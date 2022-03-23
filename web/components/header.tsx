@@ -1,9 +1,10 @@
 import { Description, Loading, Select, Spacer, Text } from '@geist-ui/core';
 import defaultTo from 'lodash/defaultTo';
 import React from 'react';
-import { Bucket } from '../api';
+import { Bucket, BucketsResponse } from '../api';
 import config from '../config';
 import { useListBuckets } from '../hooks/buckets';
+import { useNotifyError } from '../hooks/options';
 
 interface TitleProps {
   value: string | null;
@@ -13,7 +14,9 @@ interface TitleProps {
 export default function Header(props: TitleProps): React.ReactElement {
   const { value, onSelect } = props;
 
-  const { data, loading } = useListBuckets();
+  const { data, loading, error } = useListBuckets();
+
+  useNotifyError<BucketsResponse>({ data, loading, error });
 
   const defaultValue = defaultTo(value, undefined);
   const buckets = defaultTo(data?.buckets, []);
@@ -30,7 +33,7 @@ export default function Header(props: TitleProps): React.ReactElement {
 
   const placeholder: React.ReactNode = (
     <div className='flex items-center'>
-      <span>select a bucket</span>
+      <span className='text-xs font-light'>select a bucket</span>
       <Spacer w={0.5} />
       {loading && <Loading width={2} />}
     </div>
