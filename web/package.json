@@ -13,7 +13,6 @@
     "@geist-ui/core": "2.3.7",
     "@geist-ui/icons": "1.0.1",
     "clsx": "1.1.1",
-    "framer-motion": "6.2.8",
     "lodash": "4.17.21",
     "next": "12.1.0",
     "query-string": "7.1.1",
