@@ -11,6 +11,7 @@ export type BucketsResponse = {
   buckets: Bucket[];
   total: number;
 };
+
 export type NavigateRequest = {
   bucket: string;
   prefix: string;

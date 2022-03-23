@@ -1,4 +1,4 @@
-import config from '../config';
+import { http } from '../utils/http';
 import type {
   BucketsResponse,
   NavigateRequest,
@@ -8,33 +8,27 @@ import type {
 } from './types';
 
 export async function listBuckets(): Promise<BucketsResponse> {
-  return await fetch(`${config.apiURL}/api/buckets/list`).then(res =>
-    res.json(),
-  );
+  return http<BucketsResponse>('/api/buckets/list');
 }
 
 export async function navigateBucket(
   request: NavigateRequest,
 ): Promise<NavigateResponse> {
-  return await fetch(`${config.apiURL}/api/buckets/navigate`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(request),
-  }).then(res => res.json());
+  return http<NavigateResponse, NavigateRequest>(
+    '/api/buckets/navigate',
+    'POST',
+    request,
+  );
 }
 
 export async function presignUrl(
   request: PresignRequest,
 ): Promise<PresignResponse> {
-  return await fetch(`${config.apiURL}/api/objects/presign`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(request),
-  }).then(res => res.json());
+  return http<PresignResponse, PresignRequest>(
+    '/api/objects/presign',
+    'POST',
+    request,
+  );
 }
 
 export * from './types';
