@@ -1,0 +1,30 @@
+name: Build
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Go
+      uses: actions/setup-go@v2
+      with:
+        go-version: 1.18
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v1
+      with:
+        node-version: 16.14.2
+
+    - name: Prepare
+      run: make prepare
+
+    - name: Build
+      run: make build
+
+    - name: Info
+      run: ls -la build
