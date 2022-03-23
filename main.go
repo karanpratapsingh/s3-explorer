@@ -5,9 +5,11 @@ import (
 	"app/service"
 	"context"
 	"embed"
+	"flag"
 	"io/fs"
 	"os"
 
+	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 	"github.com/gorilla/mux"
@@ -29,30 +31,47 @@ func init() {
 }
 
 func main() {
+	port := flag.Int("port", 8080, "Port for the application")
+	region := flag.String("region", "", "AWS region")
+	profile := flag.String("profile", "", "AWS profile")
+
+	flag.Parse()
+
 	build, err := fs.Sub(nextFS, path)
 
 	if err != nil {
-		log.Panic().Err(err).Msg("Static")
+		log.Panic().Err(err).Msg("Static.Error")
 	}
 
-	port := 8080                        // TODO: Should be a flag
-	profile := os.Getenv("AWS_PROFILE") // TODO: Should be a flag
-	region := "us-east-1"               // TODO: Should be a flag
-
-	cfg, err := config.LoadDefaultConfig(
-		context.TODO(),
-		config.WithDefaultRegion(region),
-		config.WithSharedConfigProfile(profile),
-	)
+	cfg, err := prepareConfig(region, profile)
 
 	if err != nil {
-		log.Panic().Err(err).Msg("AWS.Config")
+		log.Panic().Err(err).Msg("AWS.Config.Error")
 	}
+
+	log.Trace().Str("region", *region).Msg("AWS.Config")
 
 	router := mux.NewRouter()
 	client := s3.NewFromConfig(cfg)
 
 	svc := service.New(client)
 	a := api.New(router, build, svc)
-	a.Start(port)
+	a.Start(*port)
+}
+
+func prepareConfig(region, profile *string) (aws.Config, error) {
+	var options []func(*config.LoadOptions) error
+
+	if *region == "" { // Region is required
+		flag.Usage()
+		panic("AWS Region is required")
+	}
+
+	if *profile != "" {
+		options = append(options, config.WithSharedConfigProfile(*profile))
+	}
+
+	options = append(options, config.WithDefaultRegion(*region))
+
+	return config.LoadDefaultConfig(context.TODO(), options...)
 }
