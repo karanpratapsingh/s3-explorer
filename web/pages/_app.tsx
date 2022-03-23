@@ -9,7 +9,6 @@ import '../styles/globals.css';
 const client = new QueryClient();
 
 function App({ Component, pageProps }: AppProps): React.ReactElement {
-
   return (
     <QueryClientProvider client={client}>
       <GeistProvider>
