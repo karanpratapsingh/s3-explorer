@@ -25,3 +25,18 @@ body,
 .db-icon {
   @apply text-lg;
 }
+
+.fade-in {
+  animation: fade-in ease 500ms;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+}
+
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}

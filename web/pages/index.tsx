@@ -37,7 +37,7 @@ export default function Home(): React.ReactElement {
   }
 
   return (
-    <div className='p-8 w-full flex flex-col'>
+    <div className='p-8 w-full flex flex-col fade-in'>
       <Header value={bucket} onSelect={onSelect} />
       <ObjectList
         bucket={bucket}

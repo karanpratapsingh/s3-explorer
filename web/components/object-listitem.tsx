@@ -1,4 +1,4 @@
-import { Spacer, Popover, Text } from '@geist-ui/core';
+import { Popover, Spacer, Text } from '@geist-ui/core';
 import File from '@geist-ui/icons/file';
 import Folder from '@geist-ui/icons/folder';
 import MoreVertical from '@geist-ui/icons/moreVertical';
@@ -40,7 +40,7 @@ export default function ObjectListItem(
       break;
   }
 
-  const popoverContent = () => (
+  const popoverContent: React.ReactNode = () => (
     <div className='w-20 flex flex-col items-center'>
       <Popover.Item>
         <Text
@@ -67,7 +67,7 @@ export default function ObjectListItem(
   return (
     <div
       className={clsx(
-        'p-1 mb-2 flex items-center justify-between',
+        'p-2 flex items-center justify-between fade-in',
         !isFile && 'cursor-pointer',
       )}
       onClick={onClick}
