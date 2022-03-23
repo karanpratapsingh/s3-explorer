@@ -2,6 +2,7 @@ package api
 
 import (
 	"app/service"
+	"app/utils"
 	"encoding/json"
 	"fmt"
 	"io/fs"
@@ -31,12 +32,14 @@ func (api apiImpl) routes() {
 func (api apiImpl) Start(port int) {
 	api.routes()
 
-	log.Info().Int("port", port).Msg("Starting...")
+	log.Info().Int("port", port).Msg("Starting application...")
 	addr := fmt.Sprintf(":%d", port)
+
+	go utils.Open("http://localhost" + addr)
 	panic(http.ListenAndServe(addr, api.router))
 }
 
-func (api apiImpl) response(writer http.ResponseWriter, data interface{}) {
+func (api apiImpl) response(writer http.ResponseWriter, data any) {
 	writer.Header().Add("Content-Type", "application/json")
 	json.NewEncoder(writer).Encode(data)
 }
