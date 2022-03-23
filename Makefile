@@ -13,7 +13,7 @@ run-server:
 
 build: clean
 	cd web && npm run build
-	go build -o build/app
+	go build -o build/s3browser
 
 clean:
 	rm -rf web/.next web/build build
