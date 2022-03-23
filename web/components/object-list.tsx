@@ -9,7 +9,9 @@ import defaultTo from 'lodash/defaultTo';
 import React, { useMemo, useState } from 'react';
 import { S3Object } from '../api';
 import { useNavigateBucket } from '../hooks/buckets';
+import { defaultParams } from '../utils/aws';
 import { createBreadcrumbs, filterObjects } from '../utils/shared';
+import { Colors } from '../utils/theme';
 import Empty from './empty';
 import ObjectListItem, { ActionType } from './object-listitem';
 
@@ -35,10 +37,7 @@ export default function ObjectList(props: ObjectListProps): React.ReactElement {
   function onAction(key: string, action: ActionType): void {
     switch (action) {
       case ActionType.Share:
-        alert('TODO: open modal');
-        break;
-      case ActionType.Move:
-        alert('TODO: implement');
+        alert(`TODO: open modal for ${key}`);
         break;
       case ActionType.Delete:
         alert('TODO: implement');
@@ -65,6 +64,9 @@ export default function ObjectList(props: ObjectListProps): React.ReactElement {
 
   const hasItems = !!filteredObjects.length && !!bucket && !loading;
   const isEmpty = !filteredObjects.length && bucket && !loading;
+  const isRoot = currentKey !== defaultParams.Prefix;
+
+  const onNavigateBack = () => !loading && onBack();
 
   const breadcrumbs = createBreadcrumbs(currentKey);
 
@@ -78,23 +80,25 @@ export default function ObjectList(props: ObjectListProps): React.ReactElement {
 
   let breadcrumbContent: React.ReactNode = (
     <div className='flex items-center'>
-      <Info size={18} />
+      <Info color={Colors.secondary} size={18} />
       <Spacer w={0.5} />
-      <span className='text-sm font-light'>Select a bucket</span>
+      <span className='text-sm font-light text-secondary'>Select a bucket</span>
     </div>
   );
 
   if (bucket) {
     breadcrumbContent = (
       <div className='flex items-center'>
-        <ChevronLeft
-          className='cursor-pointer'
-          size={22}
-          onClick={() => !loading && onBack()}
-        />
+        {isRoot && (
+          <ChevronLeft
+            className='cursor-pointer'
+            size={25}
+            onClick={onNavigateBack}
+          />
+        )}
         <Breadcrumbs>
-          <Breadcrumbs.Item>
-            <Database size={20} />
+          <Breadcrumbs.Item style={{ fontWeight: 300, fontSize: 30 }}>
+            <Database className='db-icon' />
             {bucket}
           </Breadcrumbs.Item>
           {React.Children.toArray(breadcrumbs.map(renderBreadcrumb))}
@@ -108,7 +112,7 @@ export default function ObjectList(props: ObjectListProps): React.ReactElement {
       className='flex flex-col mt-4 p-4 rounded-md border'
       style={{ height: '80vh' }}
     >
-      <div className='pb-2 flex items-center justify-between'>
+      <div className='pb-3 flex items-center justify-between border-b'>
         {breadcrumbContent}
         <Input icon={<Search />} placeholder='Search...' onChange={onSearch} />
       </div>
@@ -124,7 +128,7 @@ export default function ObjectList(props: ObjectListProps): React.ReactElement {
       )}
 
       {hasItems && (
-        <div className='flex flex-1 flex-col overflow-scroll'>
+        <div className='flex flex-1 pt-3 flex-col overflow-scroll'>
           {React.Children.toArray(filteredObjects.map(renderObject))}
         </div>
       )}

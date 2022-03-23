@@ -12,7 +12,7 @@ export default function Empty(props: EmptyProps): React.ReactElement {
     <div className='flex flex-1 flex-col items-center justify-center'>
       {icon}
       <Spacer h={1} />
-      <span className='italic text-light text-gray-400'>{text}</span>
+      <span className='italic text-light text-secondary'>{text}</span>
     </div>
   );
 }

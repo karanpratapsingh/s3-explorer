@@ -8,6 +8,7 @@ import {
 } from '../api';
 import { ApiQueryResult } from './options';
 
+// TODO: show error notification
 export function useListBuckets(): ApiQueryResult<BucketsResponse> {
   const {
     data,

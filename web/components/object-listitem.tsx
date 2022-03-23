@@ -41,7 +41,7 @@ export default function ObjectListItem(
   }
 
   const popoverContent = () => (
-    <div className='w-24 flex flex-col items-center'>
+    <div className='w-20 flex flex-col items-center'>
       <Popover.Item>
         <Text
           span
@@ -49,16 +49,6 @@ export default function ObjectListItem(
           onClick={() => onAction(key, ActionType.Share)}
         >
           Share
-        </Text>
-      </Popover.Item>
-      <Popover.Item>
-        <Text
-          span
-          className='cursor-pointer'
-          type='warning'
-          onClick={() => onAction(key, ActionType.Move)}
-        >
-          Move
         </Text>
       </Popover.Item>
       <Popover.Item>

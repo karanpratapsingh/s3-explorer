@@ -18,30 +18,29 @@ export default function Header(props: TitleProps): React.ReactElement {
   const defaultValue = defaultTo(value, undefined);
   const buckets = defaultTo(data?.buckets, []);
 
-  return (
-    <Description
-      title={<Text h6>{config.name}</Text>}
-      content={
-        <Select
-          value={defaultValue}
-          placeholder={
-            <div className='flex items-center'>
-              <span>select a bucket</span>
-              <Spacer w={0.5} />
-              {loading && <Loading width={2} />}
-            </div>
-          }
-          onChange={onSelect}
-        >
-          {React.Children.toArray(
-            buckets.map((bucket: Bucket) => (
-              <Select.Option key={bucket.name} value={bucket.name}>
-                {bucket.name}
-              </Select.Option>
-            )),
-          )}
-        </Select>
-      }
-    />
+  const title: React.ReactNode = <Text h6>{config.name}</Text>;
+
+  function renderBucket({ name }: Bucket): React.ReactNode {
+    return (
+      <Select.Option key={name} value={name}>
+        {name}
+      </Select.Option>
+    );
+  }
+
+  const placeholder: React.ReactNode = (
+    <div className='flex items-center'>
+      <span>select a bucket</span>
+      <Spacer w={0.5} />
+      {loading && <Loading width={2} />}
+    </div>
   );
+
+  const content: React.ReactNode = (
+    <Select value={defaultValue} placeholder={placeholder} onChange={onSelect}>
+      {React.Children.toArray(buckets.map(renderBucket))}
+    </Select>
+  );
+
+  return <Description title={title} content={content} />;
 }

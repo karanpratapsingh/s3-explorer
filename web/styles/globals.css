@@ -16,3 +16,12 @@ body,
   @apply text-sm;
   @apply font-light;
 }
+
+.breadcrumbs-item {
+  @apply font-light;
+  @apply text-secondary;
+}
+
+.db-icon {
+  @apply text-lg;
+}

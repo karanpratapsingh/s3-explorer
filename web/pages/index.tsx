@@ -17,6 +17,7 @@ export default function Home(): React.ReactElement {
     }
 
     setBucket(bucket);
+    setCurrentKey(defaultParams.Prefix);
   }
 
   function onNext(key: string): void {
@@ -28,7 +29,10 @@ export default function Home(): React.ReactElement {
       const prevKey = getPreviousKey(currentKey);
       setCurrentKey(prevKey);
     } else {
-      setToast({ type: 'warning', text: 'Cannot go back' });
+      setToast({
+        type: 'warning',
+        text: 'Already at the root. Please select a different bucket.',
+      });
     }
   }
 
