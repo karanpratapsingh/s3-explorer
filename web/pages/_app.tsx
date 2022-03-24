@@ -4,6 +4,7 @@ import Head from 'next/head';
 import React from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import ErrorBoundary from '../components/error-boundary';
+import config from '../config';
 import '../styles/globals.css';
 
 const client = new QueryClient();
@@ -14,6 +15,7 @@ function App({ Component, pageProps }: AppProps): React.ReactElement {
       <GeistProvider>
         <ErrorBoundary>
           <Head>
+            <title>{config.name}</title>
             <link rel='icon' href='/favicon.png' />
           </Head>
           <CssBaseline />
