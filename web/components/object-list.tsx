@@ -1,12 +1,22 @@
-import { Breadcrumbs, Input, Loading, Spacer, useModal } from '@geist-ui/core';
+import {
+  Breadcrumbs,
+  Grid,
+  Input,
+  Loading,
+  Spacer,
+  useModal,
+} from '@geist-ui/core';
 import AlertCircle from '@geist-ui/icons/alertCircle';
 import Archive from '@geist-ui/icons/archive';
 import ChevronLeft from '@geist-ui/icons/chevronLeft';
 import Database from '@geist-ui/icons/database';
+import GridIcon from '@geist-ui/icons/grid';
 import Info from '@geist-ui/icons/info';
+import ListIcon from '@geist-ui/icons/list';
 import Search from '@geist-ui/icons/search';
-import isEmpty from 'lodash/isEmpty';
+import clsx from 'clsx';
 import defaultTo from 'lodash/defaultTo';
+import isEmpty from 'lodash/isEmpty';
 import React, { useMemo, useState } from 'react';
 import { NavigateResponse, S3Object } from '../api';
 import { useNavigateBucket } from '../hooks/buckets';
@@ -15,7 +25,7 @@ import { defaultParams } from '../utils/aws';
 import { createBreadcrumbs, filterObjects } from '../utils/shared';
 import { Colors } from '../utils/theme';
 import Empty from './empty';
-import ObjectListItem, { ActionType } from './object-listitem';
+import ObjectListItem, { ActionType, LayoutType } from './object-listitem';
 import ShareModal from './share-modal';
 
 interface ObjectListProps {
@@ -30,6 +40,7 @@ export default function ObjectList(props: ObjectListProps): React.ReactElement {
 
   const { setVisible, bindings } = useModal();
 
+  const [layoutType, setLayoutType] = useState(LayoutType.List);
   const [search, setSearch] = useState('');
   const [objectKey, setObjectKey] = useState(defaultParams.Prefix);
 
@@ -56,16 +67,25 @@ export default function ObjectList(props: ObjectListProps): React.ReactElement {
     }
   }
 
+  function onChangeType(type: LayoutType): void {
+    setLayoutType(type);
+  }
+
   function renderObject(object: S3Object): React.ReactNode {
     const { key } = object;
 
+    const isListLayout = layoutType === LayoutType.List;
+
     return (
-      <ObjectListItem
-        key={key}
-        object={object}
-        onNext={onNext}
-        onAction={onAction}
-      />
+      <Grid className={clsx(isListLayout && 'min-w-full')}>
+        <ObjectListItem
+          key={key}
+          layoutType={layoutType}
+          object={object}
+          onNext={onNext}
+          onAction={onAction}
+        />
+      </Grid>
     );
   }
 
@@ -109,7 +129,7 @@ export default function ObjectList(props: ObjectListProps): React.ReactElement {
           />
         )}
         <Breadcrumbs>
-          <Breadcrumbs.Item style={{ fontWeight: 300, fontSize: 30 }}>
+          <Breadcrumbs.Item>
             <Database className='db-icon' />
             {bucket}
           </Breadcrumbs.Item>
@@ -126,7 +146,30 @@ export default function ObjectList(props: ObjectListProps): React.ReactElement {
     >
       <div className='pb-3 flex items-center justify-between border-b border-light'>
         {breadcrumbContent}
-        <Input icon={<Search />} placeholder='Search...' onChange={onSearch} />
+        <div className='flex items-center justify-between'>
+          <Input
+            className='mt-2'
+            icon={<Search />}
+            placeholder='Search...'
+            onChange={onSearch}
+          />
+          <div className='ml-2 p-1 cursor-pointer border rounded'>
+            {layoutType === LayoutType.List && (
+              <GridIcon
+                className='fade-in'
+                color={Colors.secondary}
+                onClick={() => onChangeType(LayoutType.Grid)}
+              />
+            )}
+            {layoutType === LayoutType.Grid && (
+              <ListIcon
+                className='fade-in'
+                color={Colors.secondary}
+                onClick={() => onChangeType(LayoutType.List)}
+              />
+            )}
+          </div>
+        </div>
       </div>
 
       {loading && <Empty icon={<Loading scale={2} />} />}
@@ -140,10 +183,13 @@ export default function ObjectList(props: ObjectListProps): React.ReactElement {
       )}
 
       {hasItems && (
-        <div className='flex flex-1 pt-3 flex-col overflow-scroll'>
-          {React.Children.toArray(filteredObjects.map(renderObject))}
+        <div className='flex flex-1 pt-4 flex-col overflow-y-scroll overflow-x-hidden'>
+          <Grid.Container gap={1.5}>
+            {React.Children.toArray(filteredObjects.map(renderObject))}
+          </Grid.Container>
         </div>
       )}
+
       <ShareModal
         bucket={bucket}
         objectKey={objectKey}

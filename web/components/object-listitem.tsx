@@ -1,4 +1,4 @@
-import { Popover, Spacer, Text } from '@geist-ui/core';
+import { Card, Popover, Spacer, Text } from '@geist-ui/core';
 import File from '@geist-ui/icons/file';
 import Folder from '@geist-ui/icons/folder';
 import MoreVertical from '@geist-ui/icons/moreVertical';
@@ -7,6 +7,11 @@ import React from 'react';
 import { S3Object, S3ObjectType } from '../api';
 import { formatBytes } from '../utils/shared';
 
+export enum LayoutType {
+  List = 'List',
+  Grid = 'Grid',
+}
+
 export enum ActionType {
   Share,
   Move,
@@ -14,6 +19,7 @@ export enum ActionType {
 }
 
 interface ObjectListItemProps {
+  layoutType: LayoutType;
   object: S3Object;
   onNext: (key: string) => void;
   onAction: (key: string, action: ActionType) => void;
@@ -22,23 +28,12 @@ interface ObjectListItemProps {
 export default function ObjectListItem(
   props: ObjectListItemProps,
 ): React.ReactElement {
-  const { object, onNext, onAction } = props;
+  const { object, layoutType, onNext, onAction } = props;
   const { name, key, type, size } = object;
 
   const isFile = type === S3ObjectType.FILE;
 
   const onClick = () => !isFile && onNext(key);
-
-  let icon: React.ReactNode = null;
-
-  switch (type) {
-    case S3ObjectType.FILE:
-      icon = <File size={20} />;
-      break;
-    case S3ObjectType.FOLDER:
-      icon = <Folder size={20} />;
-      break;
-  }
 
   const popoverContent: React.ReactNode = () => (
     <div className='w-20 flex flex-col items-center'>
@@ -64,16 +59,16 @@ export default function ObjectListItem(
     </div>
   );
 
-  return (
+  let item = (
     <div
       className={clsx(
-        'p-2 flex items-center justify-between fade-in',
+        'flex items-center justify-between fade-in',
         !isFile && 'cursor-pointer',
       )}
       onClick={onClick}
     >
       <div className='flex items-center'>
-        {icon}
+        {getIcon(type, 20)}
         <Spacer w={0.5} />
         <span className='text-sm font-light'>{name}</span>
       </div>
@@ -95,4 +90,45 @@ export default function ObjectListItem(
       </div>
     </div>
   );
+
+  if (layoutType === LayoutType.Grid) {
+    item = (
+      <Popover content={popoverContent} placement='right'>
+        <Card
+          width='10.25rem'
+          className='fade-in cursor-pointer'
+          onClick={onClick}
+        >
+          <div className='flex items-center justify-center'>
+            {getIcon(type, 40)}
+          </div>
+          <p className='text-sm text-center font-light truncate text-ellipsis'>
+            {name}
+          </p>
+          {size && (
+            <p className='text-secondary text-sm font-light'>
+              {formatBytes(size)}
+            </p>
+          )}
+        </Card>
+      </Popover>
+    );
+  }
+
+  return item;
+}
+
+function getIcon(type: S3ObjectType, size: number): React.ReactNode {
+  let icon: React.ReactNode = null;
+
+  switch (type) {
+    case S3ObjectType.FILE:
+      icon = <File size={size} />;
+      break;
+    case S3ObjectType.FOLDER:
+      icon = <Folder size={size} />;
+      break;
+  }
+
+  return icon;
 }
