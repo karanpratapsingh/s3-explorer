@@ -1,9 +1,11 @@
 import { useToasts } from '@geist-ui/core';
+import dynamic from 'next/dynamic';
 import React, { useState } from 'react';
-import Header from '../components/header';
-import ObjectList from '../components/object-list';
 import { defaultParams } from '../utils/aws';
 import { getPreviousKey } from '../utils/shared';
+
+const Header = dynamic(() => import('../components/header'));
+const ObjectList = dynamic(() => import('../components/object-list'));
 
 export default function Home(): React.ReactElement {
   const { setToast } = useToasts();

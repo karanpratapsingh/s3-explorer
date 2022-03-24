@@ -17,6 +17,7 @@ import SearchIcon from '@geist-ui/icons/search';
 import clsx from 'clsx';
 import defaultTo from 'lodash/defaultTo';
 import isEmpty from 'lodash/isEmpty';
+import dynamic from 'next/dynamic';
 import React, { useMemo, useState } from 'react';
 import { NavigateResponse, S3Object } from '../api';
 import { useNavigateBucket } from '../hooks/buckets';
@@ -26,7 +27,8 @@ import { createBreadcrumbs, filterObjects } from '../utils/shared';
 import { Colors } from '../utils/theme';
 import Empty from './empty';
 import ObjectListItem, { ActionType, LayoutType } from './object-listitem';
-import ShareModal from './share-modal';
+
+const ShareModal = dynamic(() => import('./share-modal'));
 
 interface ObjectListProps {
   bucket: string;
