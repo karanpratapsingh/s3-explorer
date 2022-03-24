@@ -1,6 +1,6 @@
-*.index.html linguist-detectable=false
-*.tsx linguist-detectable=false
+web/components/*.tsx linguist-detectable=false
 *.js linguist-detectable=false
 *.json linguist-detectable=false
+*.css linguist-detectable=false
 *go.sum linguist-language=go
 *go.mod linguist-language=go
