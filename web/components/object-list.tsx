@@ -84,7 +84,7 @@ export default function ObjectList(props: ObjectListProps): React.ReactElement {
           key={key}
           layoutType={layoutType}
           object={object}
-          onNext={onNext}
+          onNext={onNavigateNext}
           onAction={onAction}
         />
       </Grid>
@@ -100,7 +100,17 @@ export default function ObjectList(props: ObjectListProps): React.ReactElement {
   const noObjects = !filteredObjects.length && !isEmpty(bucket) && !loading;
   const isRoot = currentKey !== defaultParams.Prefix;
 
-  const onNavigateBack = () => !loading && onBack();
+  function onNavigateNext(key: string): void {
+    setSearch('');
+    onNext(key);
+  }
+
+  function onNavigateBack(): void {
+    if (!loading) {
+      setSearch('');
+      onBack();
+    }
+  }
 
   const breadcrumbs = createBreadcrumbs(currentKey);
 
@@ -150,6 +160,7 @@ export default function ObjectList(props: ObjectListProps): React.ReactElement {
         {breadcrumbContent}
         <div className='flex items-center justify-between'>
           <Input
+            value={search}
             className='mt-2'
             icon={<SearchIcon />}
             placeholder='Search...'
