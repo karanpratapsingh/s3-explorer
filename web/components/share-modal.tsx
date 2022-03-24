@@ -8,7 +8,7 @@ import {
   useToasts,
 } from '@geist-ui/core';
 import { ModalHooksBindings } from '@geist-ui/core/esm/use-modal';
-import Clock from '@geist-ui/icons/clock';
+import ClockIcon from '@geist-ui/icons/clock';
 import isEmpty from 'lodash/isEmpty';
 import React, { ChangeEvent, useState } from 'react';
 import { PresignRequest, PresignResponse, PresignTimeUnit } from '../api';
@@ -102,7 +102,7 @@ export default function ShareModal(props: ShareModalProps): React.ReactElement {
               value={unit}
               placeholder='Unit'
               onChange={onUnit}
-              icon={() => <Clock size={20} />}
+              icon={() => <ClockIcon size={20} />}
             >
               {React.Children.toArray(
                 timeUnitOptions.map(renderTimeUnitOption),

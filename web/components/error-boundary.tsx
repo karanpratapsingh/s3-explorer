@@ -1,4 +1,4 @@
-import { AlertTriangle } from '@geist-ui/icons';
+import AlertTriangleIcon from '@geist-ui/icons/alertTriangle';
 import React from 'react';
 import Empty from './empty';
 
@@ -25,7 +25,9 @@ export default class ErrorBoundary extends React.Component {
     const { children } = this.props;
 
     if (error && hasError) {
-      return <Empty text={error?.message} icon={<AlertTriangle size={80} />} />;
+      return (
+        <Empty text={error?.message} icon={<AlertTriangleIcon size={80} />} />
+      );
     }
 
     return children;

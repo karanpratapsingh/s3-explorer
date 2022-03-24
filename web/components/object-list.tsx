@@ -6,14 +6,14 @@ import {
   Spacer,
   useModal,
 } from '@geist-ui/core';
-import AlertCircle from '@geist-ui/icons/alertCircle';
-import Archive from '@geist-ui/icons/archive';
-import ChevronLeft from '@geist-ui/icons/chevronLeft';
-import Database from '@geist-ui/icons/database';
+import AlertCircleIcon from '@geist-ui/icons/alertCircle';
+import ArchiveIcon from '@geist-ui/icons/archive';
+import ChevronLeftIcon from '@geist-ui/icons/chevronLeft';
+import DatabaseIcon from '@geist-ui/icons/database';
 import GridIcon from '@geist-ui/icons/grid';
-import Info from '@geist-ui/icons/info';
+import InfoIcon from '@geist-ui/icons/info';
 import ListIcon from '@geist-ui/icons/list';
-import Search from '@geist-ui/icons/search';
+import SearchIcon from '@geist-ui/icons/search';
 import clsx from 'clsx';
 import defaultTo from 'lodash/defaultTo';
 import isEmpty from 'lodash/isEmpty';
@@ -112,7 +112,7 @@ export default function ObjectList(props: ObjectListProps): React.ReactElement {
 
   let breadcrumbContent: React.ReactNode = (
     <div className='flex items-center'>
-      <Info color={Colors.secondary} size={18} />
+      <InfoIcon color={Colors.secondary} size={18} />
       <Spacer w={0.5} />
       <span className='text-sm font-light text-secondary'>Select a bucket</span>
     </div>
@@ -122,7 +122,7 @@ export default function ObjectList(props: ObjectListProps): React.ReactElement {
     breadcrumbContent = (
       <div className='flex items-center'>
         {isRoot && (
-          <ChevronLeft
+          <ChevronLeftIcon
             className='cursor-pointer'
             size={25}
             onClick={onNavigateBack}
@@ -130,7 +130,7 @@ export default function ObjectList(props: ObjectListProps): React.ReactElement {
         )}
         <Breadcrumbs>
           <Breadcrumbs.Item>
-            <Database className='db-icon' />
+            <DatabaseIcon className='db-icon' />
             {bucket}
           </Breadcrumbs.Item>
           {React.Children.toArray(breadcrumbs.map(renderBreadcrumb))}
@@ -149,7 +149,7 @@ export default function ObjectList(props: ObjectListProps): React.ReactElement {
         <div className='flex items-center justify-between'>
           <Input
             className='mt-2'
-            icon={<Search />}
+            icon={<SearchIcon />}
             placeholder='Search...'
             onChange={onSearch}
           />
@@ -175,11 +175,14 @@ export default function ObjectList(props: ObjectListProps): React.ReactElement {
       {loading && <Empty icon={<Loading scale={2} />} />}
 
       {!bucket && (
-        <Empty text='Please select a bucket' icon={<AlertCircle size={50} />} />
+        <Empty
+          text='Please select a bucket'
+          icon={<AlertCircleIcon size={50} />}
+        />
       )}
 
       {noObjects && (
-        <Empty text='No objects found' icon={<Archive size={50} />} />
+        <Empty text='No objects found' icon={<ArchiveIcon size={50} />} />
       )}
 
       {hasItems && (

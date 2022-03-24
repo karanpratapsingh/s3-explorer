@@ -1,7 +1,7 @@
 import { Card, Popover, Spacer, Text } from '@geist-ui/core';
-import File from '@geist-ui/icons/file';
-import Folder from '@geist-ui/icons/folder';
-import MoreVertical from '@geist-ui/icons/moreVertical';
+import FileIcon from '@geist-ui/icons/file';
+import FolderIcon from '@geist-ui/icons/folder';
+import MoreVerticalIcon from '@geist-ui/icons/moreVertical';
 import clsx from 'clsx';
 import React from 'react';
 import { S3Object, S3ObjectType } from '../api';
@@ -83,7 +83,7 @@ export default function ObjectListItem(
           <>
             <Spacer w={2} />
             <Popover content={popoverContent} placement='left'>
-              <MoreVertical className='cursor-pointer' size={18} />
+              <MoreVerticalIcon className='cursor-pointer' size={18} />
             </Popover>
           </>
         )}
@@ -123,10 +123,10 @@ function getIcon(type: S3ObjectType, size: number): React.ReactNode {
 
   switch (type) {
     case S3ObjectType.FILE:
-      icon = <File size={size} />;
+      icon = <FileIcon size={size} />;
       break;
     case S3ObjectType.FOLDER:
-      icon = <Folder size={size} />;
+      icon = <FolderIcon size={size} />;
       break;
   }
 
