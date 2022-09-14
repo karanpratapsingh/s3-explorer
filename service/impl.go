@@ -1,8 +1,8 @@
 package service
 
 import (
-	"app/utils"
 	"context"
+	"s3explorer/utils"
 	"time"
 
 	"github.com/aws/aws-sdk-go-v2/service/s3"
@@ -38,12 +38,12 @@ func (svc serviceImpl) Buckets(ctx context.Context) (BucketsResponse, error) {
 func (svc serviceImpl) Navigate(ctx context.Context, request NavigateRequest) (NavigateResponse, error) {
 	var data []S3Object = make([]S3Object, 0)
 
-	delimeter := "/"
+	delimiter := "/"
 
 	params := s3.ListObjectsV2Input{
 		Bucket:    &request.Bucket,
 		Prefix:    &request.Prefix,
-		Delimiter: &delimeter,
+		Delimiter: &delimiter,
 	}
 
 	output, err := svc.client.ListObjectsV2(ctx, &params)
@@ -59,7 +59,7 @@ func (svc serviceImpl) Navigate(ctx context.Context, request NavigateRequest) (N
 	if output.Contents != nil {
 		for _, content := range output.Contents {
 			key := *content.Key
-			name := utils.Trim(key, request.Prefix, delimeter)
+			name := utils.Trim(key, request.Prefix, delimiter)
 
 			if *content.Key != request.Prefix {
 				files = append(files, S3Object{name, key, &content.Size, S3ObjectTypeFile})
@@ -70,7 +70,7 @@ func (svc serviceImpl) Navigate(ctx context.Context, request NavigateRequest) (N
 	if output.CommonPrefixes != nil {
 		for _, common := range output.CommonPrefixes {
 			key := *common.Prefix
-			name := utils.Trim(key, request.Prefix, delimeter)
+			name := utils.Trim(key, request.Prefix, delimiter)
 
 			folders = append(folders, S3Object{name, key, nil, S3ObjectTypeFolder})
 		}

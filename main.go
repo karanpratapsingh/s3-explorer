@@ -1,13 +1,13 @@
 package main
 
 import (
-	"app/api"
-	"app/service"
 	"context"
 	"embed"
 	"flag"
 	"io/fs"
 	"os"
+	"s3explorer/api"
+	"s3explorer/service"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/config"
@@ -27,7 +27,9 @@ const path = "web/build"
 var nextFS embed.FS
 
 func init() {
-	log.Logger = log.Output(zerolog.ConsoleWriter{Out: os.Stderr})
+	if os.Getenv("ENVIRONMENT") == "development" {
+		log.Logger = log.Output(zerolog.ConsoleWriter{Out: os.Stderr})
+	}
 }
 
 func main() {

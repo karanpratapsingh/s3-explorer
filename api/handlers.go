@@ -1,9 +1,9 @@
 package api
 
 import (
-	"app/service"
 	"encoding/json"
 	"net/http"
+	"s3explorer/service"
 )
 
 func (api apiImpl) ListBuckets(w http.ResponseWriter, r *http.Request) {

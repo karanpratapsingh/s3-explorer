@@ -1,12 +1,12 @@
 package api
 
 import (
-	"app/service"
-	"app/utils"
 	"encoding/json"
 	"fmt"
 	"io/fs"
 	"net/http"
+	"s3explorer/service"
+	"s3explorer/utils"
 
 	"github.com/gorilla/mux"
 	"github.com/rs/zerolog/log"

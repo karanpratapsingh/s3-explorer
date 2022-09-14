@@ -17,7 +17,8 @@ run-server:
 
 build: clean
 	cd web && npm run build
-	go build -o build/s3browser
+	go build -o build/s3explorer
 
+.PHONY: clean
 clean:
 	rm -rf web/.next web/build build
