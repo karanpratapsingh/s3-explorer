@@ -25,14 +25,10 @@ jobs:
         run: make prepare
 
       - name: Build
-        run: |
-          make build os=darwin arch=amd64
-          make build os=darwin arch=arm64
-          make build os=linux arch=amd64
-          make build os=linux arch=arm64
-          make build os=windows arch=amd64
+        run: make package
 
-      - uses: actions/upload-artifact@v3
+      - name: Upload
+        uses: actions/upload-artifact@v3
         with:
           name: binaries
           path: build/*
