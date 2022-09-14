@@ -48,3 +48,12 @@ export type PresignRequest = {
 export type PresignResponse = {
   url: string;
 };
+
+export type DeleteRequest = {
+  bucket: string;
+  key: string;
+};
+
+export type DeleteResponse = {
+  success: boolean;
+};

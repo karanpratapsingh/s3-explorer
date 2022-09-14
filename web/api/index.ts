@@ -1,6 +1,8 @@
 import { http } from '../utils/http';
 import type {
   BucketsResponse,
+  DeleteRequest,
+  DeleteResponse,
   NavigateRequest,
   NavigateResponse,
   PresignRequest,
@@ -26,6 +28,16 @@ export async function presignUrl(
 ): Promise<PresignResponse> {
   return http<PresignResponse, PresignRequest>(
     '/api/objects/presign',
+    'POST',
+    request,
+  );
+}
+
+export async function deleteObject(
+  request: DeleteRequest,
+): Promise<DeleteResponse> {
+  return http<DeleteResponse, DeleteRequest>(
+    '/api/objects/delete',
     'POST',
     request,
   );
