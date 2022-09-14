@@ -52,3 +52,21 @@ func (api apiImpl) PresignObject(w http.ResponseWriter, r *http.Request) {
 
 	api.response(w, data)
 }
+
+func (api apiImpl) DeleteObject(w http.ResponseWriter, r *http.Request) {
+	var body service.DeleteRequest
+
+	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	data, err := api.svc.Delete(r.Context(), body)
+
+	if err != nil {
+		api.error(w, err, http.StatusInternalServerError)
+		return
+	}
+
+	api.response(w, data)
+}

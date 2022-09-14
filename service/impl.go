@@ -108,5 +108,29 @@ func (svc serviceImpl) Presign(ctx context.Context, request PresignRequest) (Pre
 		return PresignResponse{}, err
 	}
 
+	log.Info().
+		Str("bucket", request.Bucket).
+		Str("key", request.Key).
+		Msg("Service.Presign")
+
 	return PresignResponse{output.URL}, nil
+}
+
+func (svc serviceImpl) Delete(ctx context.Context, request DeleteRequest) (DeleteResponse, error) {
+	params := s3.DeleteObjectInput{
+		Bucket: &request.Bucket,
+		Key:    &request.Key,
+	}
+
+	if _, err := svc.client.DeleteObject(ctx, &params); err != nil {
+		log.Error().Err(err).Msg("Service.Delete.Error")
+		return DeleteResponse{}, err
+	}
+
+	log.Warn().
+		Str("bucket", request.Bucket).
+		Str("key", request.Key).
+		Msg("Service.Delete")
+
+	return DeleteResponse{true}, nil
 }

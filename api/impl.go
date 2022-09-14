@@ -26,6 +26,7 @@ func (api apiImpl) routes() {
 	api.router.HandleFunc("/api/buckets/list", api.ListBuckets).Methods(http.MethodGet)
 	api.router.HandleFunc("/api/buckets/navigate", api.NavigateBucket).Methods(http.MethodPost)
 	api.router.HandleFunc("/api/objects/presign", api.PresignObject).Methods(http.MethodPost)
+	api.router.HandleFunc("/api/objects/delete", api.DeleteObject).Methods(http.MethodPost)
 	api.router.PathPrefix("/").Handler(http.FileServer(http.FS(api.assets)))
 }
 

@@ -9,6 +9,7 @@ type Service interface {
 	Buckets(ctx context.Context) (BucketsResponse, error)
 	Navigate(ctx context.Context, request NavigateRequest) (NavigateResponse, error)
 	Presign(ctx context.Context, request PresignRequest) (PresignResponse, error)
+	Delete(ctx context.Context, request DeleteRequest) (DeleteResponse, error)
 }
 
 type Bucket struct {
@@ -52,4 +53,13 @@ type PresignRequest struct {
 
 type PresignResponse struct {
 	Url string `json:"url"`
+}
+
+type DeleteRequest struct {
+	Bucket string `json:"bucket"`
+	Key    string `json:"key"`
+}
+
+type DeleteResponse struct {
+	Success bool `json:"success"`
 }
