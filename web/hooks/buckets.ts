@@ -27,7 +27,7 @@ export function useNavigateBucket(
     isLoading: loading,
     error,
   } = useQuery<NavigateResponse, Error>(
-    ['buckets-navigate', bucket, prefix],
+    ['navigate-bucket', bucket, prefix],
     () => navigateBucket({ bucket, prefix }),
     {
       enabled: !isEmpty(bucket),

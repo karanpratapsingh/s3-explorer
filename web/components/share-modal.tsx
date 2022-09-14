@@ -5,7 +5,7 @@ import {
   Modal,
   Select,
   Snippet,
-  useToasts,
+  useToasts
 } from '@geist-ui/core';
 import { ModalHooksBindings } from '@geist-ui/core/esm/use-modal';
 import ClockIcon from '@geist-ui/icons/clock';
@@ -19,7 +19,7 @@ interface ShareModalProps {
   bucket: string;
   objectKey: string;
   bindings: ModalHooksBindings;
-  onClose: () => void;
+  onClose: VoidFunction;
 }
 
 export default function ShareModal(props: ShareModalProps): React.ReactElement {
@@ -120,7 +120,6 @@ export default function ShareModal(props: ShareModalProps): React.ReactElement {
           <Snippet className='fade-in' marginTop={1} text={data.url} />
         )}
 
-        <div className='flex items-center justify-between'></div>
       </Modal.Content>
       <Modal.Action passive onClick={onClose}>
         Done

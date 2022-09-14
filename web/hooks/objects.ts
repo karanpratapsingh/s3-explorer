@@ -1,5 +1,12 @@
 import { useMutation } from 'react-query';
-import { PresignRequest, PresignResponse, presignUrl } from '../api';
+import {
+  deleteObject,
+  DeleteRequest,
+  DeleteResponse,
+  PresignRequest,
+  PresignResponse,
+  presignUrl
+} from '../api';
 import { ApiMutationResult } from './options';
 
 export function usePresignUrl(
@@ -11,8 +18,24 @@ export function usePresignUrl(
     isLoading: loading,
     error,
   } = useMutation<PresignResponse, unknown, PresignRequest>(
-    ['objects-presign', key],
+    ['presign-object', key],
     (request: PresignRequest) => presignUrl(request),
+  );
+
+  return { mutate, data, loading, error };
+}
+
+export function useDeleteObject(
+  key: string,
+): ApiMutationResult<DeleteResponse, DeleteRequest> {
+  const {
+    mutate,
+    data,
+    isLoading: loading,
+    error,
+  } = useMutation<DeleteResponse, unknown, DeleteRequest>(
+    ['delete-object', key],
+    (request: DeleteRequest) => deleteObject(request),
   );
 
   return { mutate, data, loading, error };

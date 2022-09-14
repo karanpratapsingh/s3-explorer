@@ -29,18 +29,20 @@ import Empty from './empty';
 import ObjectListItem, { ActionType, LayoutType } from './object-listitem';
 
 const ShareModal = dynamic(() => import('./share-modal'));
+const DeleteModal = dynamic(() => import('./delete-modal'));
 
 interface ObjectListProps {
   bucket: string;
   currentKey: string;
   onNext: (key: string) => void;
-  onBack: () => void;
+  onBack: VoidFunction;
 }
 
 export default function ObjectList(props: ObjectListProps): React.ReactElement {
   const { bucket, currentKey, onNext, onBack } = props;
 
-  const { setVisible, bindings } = useModal();
+  const { setVisible: setShareVisible, bindings: shareBindings } = useModal();
+  const { setVisible: setDeleteVisible, bindings: deleteBindings } = useModal();
 
   const [layoutType, setLayoutType] = useState(LayoutType.List);
   const [search, setSearch] = useState('');
@@ -61,10 +63,10 @@ export default function ObjectList(props: ObjectListProps): React.ReactElement {
 
     switch (action) {
       case ActionType.Share:
-        setVisible(true);
+        setShareVisible(true);
         break;
       case ActionType.Delete:
-        alert('TODO: implement');
+        setDeleteVisible(true);
         break;
     }
   }
@@ -209,8 +211,14 @@ export default function ObjectList(props: ObjectListProps): React.ReactElement {
       <ShareModal
         bucket={bucket}
         objectKey={objectKey}
-        bindings={bindings}
-        onClose={() => setVisible(false)}
+        bindings={shareBindings}
+        onClose={() => setShareVisible(false)}
+      />
+      <DeleteModal
+        bucket={bucket}
+        objectKey={objectKey}
+        bindings={deleteBindings}
+        onClose={() => setDeleteVisible(false)}
       />
     </div>
   );
