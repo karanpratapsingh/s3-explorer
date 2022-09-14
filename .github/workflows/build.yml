@@ -26,6 +26,7 @@ jobs:
 
       - name: Build
         run: |
+          make build-web
           make package os=darwin arch=amd64
           make package os=darwin arch=arm64
           make package os=linux arch=amd64
