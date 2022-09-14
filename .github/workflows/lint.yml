@@ -28,7 +28,3 @@ jobs:
       - name: Lint Web
         run: cd web && npm run lint
 
-      - name: Lint Server
-        uses: golangci/golangci-lint-action@v2
-        with:
-          version: v1.45
