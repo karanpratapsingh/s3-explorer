@@ -1,6 +1,9 @@
 # Set a region if not provided
 region := $(if $(region),$(region),us-east-1)
 
+os := $(if $(os),$(os),darwin)
+arch := $(if $(arch),$(arch),arm64)
+
 prepare:
 	cd web && npm install
 	go mod tidy
@@ -17,7 +20,7 @@ run-server:
 
 build: clean
 	cd web && npm run build
-	go build -o build/s3explorer
+	GOOS=$(os) GOARCH=$(arch) go build -o build/s3explorer_$(os)_$(arch)
 
 .PHONY: clean
 clean:

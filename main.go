@@ -27,9 +27,7 @@ const path = "web/build"
 var nextFS embed.FS
 
 func init() {
-	if os.Getenv("ENVIRONMENT") == "development" {
-		log.Logger = log.Output(zerolog.ConsoleWriter{Out: os.Stderr})
-	}
+	log.Logger = log.Output(zerolog.ConsoleWriter{Out: os.Stderr})
 }
 
 func main() {

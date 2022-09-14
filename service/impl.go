@@ -111,6 +111,7 @@ func (svc serviceImpl) Presign(ctx context.Context, request PresignRequest) (Pre
 	log.Info().
 		Str("bucket", request.Bucket).
 		Str("key", request.Key).
+		Str("duration", request.Duration).
 		Msg("Service.Presign")
 
 	return PresignResponse{output.URL}, nil
